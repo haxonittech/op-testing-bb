@@ -1,0 +1,81 @@
+# yamllint disable rule:line-length rule:document-start
+title: "Celo <> OP op-geth forkdiff"
+footer: |
+  Fork-diff overview of changes made in [Celo's `op-geth`](https://github.com/celo-org/op-geth),
+  a fork of [Optimism's `op-geth`](https://github.com/ethereum-optimism/op-geth).
+base:
+  name: op-geth
+  url: https://github.com/celo-org/op-geth
+  ref: refs/remotes/origin/celo-rebase-15-upstream
+fork:
+  name: Celo
+  url: https://github.com/celo-org/op-geth
+  ref: HEAD
+def:
+  title: "Celo's op-geth"
+  description: |
+    This is an overview of the changes in [Celo's `op-geth` implementation](https://github.com/celo-org/op-geth),
+    a fork of [Optimism's `op-geth`](https://github.com/ethereum-optimism/op-geth).
+
+    For differences between the base `op-geth` and `go-ethereum`, check out Optimism's
+    [fork-diff overview of changes](https://op-geth.optimism.io/).
+
+  sub:
+    - title: "Celo-specific features"
+      sub:
+        - title: "Celo token duality"
+          description: "The Celo token is both the native token and ERC-20 compatible."
+          globs:
+            - "core/vm/celo_contracts*.go"
+            - "core/vm/contracts*.go"
+            - "core/vm/evm.go"
+        - title: "Celo fee currencies"
+          description: "Fee currencies allow to pay transaction fees with ERC20 tokens."
+          globs:
+            - "core/evm.go"
+            - "contracts/fee_currencies.go"
+            - "core/blockchain_celo_test.go"
+            - "core/celo_evm.go"
+            - "core/state_processor.go"
+            - "core/state_transition.go"
+            - "core/types/celo_dynamic_fee_tx.go"
+            - "core/types/celo_transaction_signing.go"
+            - "core/txpool/*"
+            - "core/txpool/*/*"
+            - "core/types/receipt*.go"
+            - "core/types/transaction*.go"
+            - "core/types/tx*.go"
+        - title: "Celo contracts"
+          description: |
+            Contract bindings are necessary for token duality and gas currencies.
+            The corresponding contracts are included to generate the bindings and test these features.
+          globs:
+            - "contracts/celo/*"
+            - "contracts/celo/*/*"
+            - "contracts/config/registry_ids.go"
+            - "core/celo_backend.go"
+            - "core/celo_genesis.go"
+        - title: "Chain config"
+          description: ""
+          globs:
+            - "params/config.go"
+            - "params/config_op.go"
+            - "params/protocol_params.go"
+            - "core/genesis.go"
+        - title: "E2E tests"
+          globs:
+            - "e2e_test/*"
+            - "e2e_test/*/*"
+
+# ignored globally, does not count towards line count
+ignore:
+  - ".circleci/*"
+  - "*.sum"
+  - "go.mod"
+  - "fork.yaml"
+  - "Makefile"
+  - ".golangci.yml"
+  - ".github/**"
+  - "**/*.gob" # data asset, not code
+  - "core/vm/testdata/precompiles/p256Verify.json" # data asset, not code
+  - "eth/tracers/internal/tracetest/testdata/**/*.json"
